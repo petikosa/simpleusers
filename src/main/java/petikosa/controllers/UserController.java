@@ -14,12 +14,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    // private final AuthenticationManager authenticationManager;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("single")
     public UserDto getUserById(@Valid @NotNull  @PathParam("id") long id) {
         return userService.getUserById(id);
     }
@@ -43,4 +44,14 @@ public class UserController {
     public void deleteUser(@Valid @NotNull @PathParam("id") long id) {
         userService.deleteUser(id);
     }
+
+//    @PostMapping("login")
+//    public void login(@RequestBody LoginRequest loginRequest) {
+//        Authentication authenticationRequest =
+//                UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.username(), loginRequest.password());
+//        Authentication authenticationResponse =
+//                this.authenticationManager.authenticate(authenticationRequest);
+//    }
+//
+//    public record LoginRequest(String username, String password) {}
 }
