@@ -21,4 +21,9 @@ public class ApplicationExceptionHandler {
     public ResponseEntity<String> handleMethodArgumentNotValidException(HttpServletRequest req, Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({SecurityException.class})
+    public ResponseEntity<String> handleSecurityException(HttpServletRequest req, Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN);
+    }
 }

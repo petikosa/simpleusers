@@ -10,7 +10,6 @@ import petikosa.services.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
 public class UserController {
 
     private final UserService userService;
@@ -20,38 +19,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("single")
+    @GetMapping("/public/single")
     public UserDto getUserById(@Valid @NotNull  @PathParam("id") long id) {
         return userService.getUserById(id);
     }
 
-    @GetMapping("all")
+    @GetMapping("/public/all")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @PostMapping("create")
+    @PostMapping("/auth/create")
     public void createUser(@Valid @RequestBody UserDto user) {
         userService.createUser(user);
     }
 
-    @PutMapping("update")
+    @PutMapping("/auth/update")
     public void updateUser(@Valid @RequestBody UserDto user) {
         userService.updateUser(user);
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("/auth/delete")
     public void deleteUser(@Valid @NotNull @PathParam("id") long id) {
         userService.deleteUser(id);
     }
 
-//    @PostMapping("login")
-//    public void login(@RequestBody LoginRequest loginRequest) {
-//        Authentication authenticationRequest =
-//                UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.username(), loginRequest.password());
-//        Authentication authenticationResponse =
-//                this.authenticationManager.authenticate(authenticationRequest);
-//    }
-//
-//    public record LoginRequest(String username, String password) {}
 }

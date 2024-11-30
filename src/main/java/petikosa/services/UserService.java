@@ -3,6 +3,8 @@ package petikosa.services;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import petikosa.dtos.UserDto;
 import petikosa.entities.User;
@@ -38,12 +40,19 @@ public class UserService {
         User existingUser = findById(user.id);
         existingUser.setName(user.name);
         existingUser.setUsername(user.username);
-        existingUser.setPassword(user.password);
+        if (!user.password.equals(existingUser.getPassword())) {
+            checkCurrentUser(user.username);
+            existingUser.setPassword(user.password);
+        }
         userRepository.save(existingUser);
     }
 
     public void deleteUser(long id) {
         entityManager.remove(findById(id));
+    }
+
+    private User findById(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found"));
     }
 
     private UserDto convertToDto(User user) {
@@ -54,7 +63,16 @@ public class UserService {
         return new User(userDto.name, userDto.username, userDto.password);
     }
 
-    public User findById(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found"));
+    private void checkCurrentUser(String username) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String principalUsername = ((UserDetails) principal).getUsername();
+            if (!principalUsername.equals(username)) {
+                throw new SecurityException("User can modify only his own password");
+            }
+        } else {
+            throw new SecurityException("Could not retrieve current user");
+        }
     }
 }

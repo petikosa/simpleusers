@@ -24,11 +24,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize ->
-                        authorize.anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
-        http.csrf().disable();
-        return http.build();
+        return http.csrf().disable()
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/public/**").permitAll())
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/auth/**").authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .build();
     }
 
     @Bean
@@ -40,18 +42,4 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(users);
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            UserDetailsService userDetailsService,
-//            PasswordEncoder passwordEncoder) {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(userDetailsService);
-//        authenticationProvider.setPasswordEncoder(passwordEncoder);
-//        return new ProviderManager(authenticationProvider);
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    }
 }
