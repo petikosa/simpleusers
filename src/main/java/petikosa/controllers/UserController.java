@@ -13,7 +13,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    // private final AuthenticationManager authenticationManager;
 
     public UserController(UserService userService) {
         this.userService = userService;

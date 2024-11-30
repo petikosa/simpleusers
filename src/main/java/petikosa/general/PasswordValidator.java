@@ -4,10 +4,10 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class PasswordValidator implements
-        ConstraintValidator<ValidatePassword, String> {
+        ConstraintValidator<ValidPassword, String> {
 
     @Override
-    public void initialize(ValidatePassword password) {
+    public void initialize(ValidPassword password) {
     }
 
     @Override

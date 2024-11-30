@@ -2,7 +2,7 @@ package petikosa.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import petikosa.general.ValidatePassword;
+import petikosa.general.ValidPassword;
 
 public class UserDto {
 
@@ -10,9 +10,9 @@ public class UserDto {
     public long id;
     @NotBlank(message = "Name should not be empty")
     public String name;
-    @NotBlank
+    @NotBlank(message = "Username should not be empty")
     public String username;
-    @ValidatePassword
+    @ValidPassword
     public String password;
 
     public UserDto(long id, String name, String username, String password) {

@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Constraint(validatedBy = PasswordValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidatePassword {
+public @interface ValidPassword {
     String message() default "Password should have at least 8 characters.\n" +
             "A digit must occur at least once\n" +
             "Alower case letter must occur at least once\n" +

@@ -33,6 +33,9 @@ public class UserService {
     }
 
     public void createUser(UserDto user) {
+        if (usernameExists(user.username)) {
+            throw new SecurityException("User with this username already exists");
+        }
         userRepository.save(convertFromDto(user));
     }
 
@@ -49,6 +52,10 @@ public class UserService {
 
     public void deleteUser(long id) {
         entityManager.remove(findById(id));
+    }
+
+    public boolean usernameExists(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 
     private User findById(long id) {
